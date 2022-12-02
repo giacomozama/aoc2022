@@ -1,6 +1,6 @@
 package me.giacomozama.adventofcode2022.days
 
-abstract class Day(val number: Int) {
+abstract class Day {
 
     abstract fun solveFirstPuzzle(): Any
 

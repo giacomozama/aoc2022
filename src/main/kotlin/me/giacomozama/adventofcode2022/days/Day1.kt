@@ -1,6 +1,6 @@
 package me.giacomozama.adventofcode2022.days
 
-class Day1 : Day(1) {
+class Day1 : Day() {
 
     private val input: List<IntArray> = listOf(
         intArrayOf(3864, 5112, 3233, 3008, 5052, 3291, 4002, 5402, 2907, 2398, 3014, 3923, 1475, 1997, 2519),
