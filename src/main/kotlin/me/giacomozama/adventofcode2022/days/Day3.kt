@@ -329,9 +329,13 @@ class Day3 : Day() {
         for (i in input.indices step 3) {
             val rs1 = getCharBitmask(input[i])
             val rs2 = getCharBitmask(input[i + 1])
-            val rs3 = getCharBitmask(input[i + 2])
-            val shared = 'A' + (rs1 and rs2 and rs3).countTrailingZeroBits()
-            result += shared - if (shared in 'a'..'z') '`' else '&'
+            val mask = rs1 and rs2
+            for (c in input[i + 2]) {
+                if (1L shl (c - 'A') and mask != 0L) {
+                    result += c - if (c in 'a'..'z') '`' else '&'
+                    break
+                }
+            }
         }
         return result
     }
