@@ -537,7 +537,7 @@ class Day5 : Day() {
     }
 
     // time: O(m), space: O(n)
-    override fun solveSecondPuzzle(): Any {
+    override fun solveSecondPuzzle(): String {
         val state = Array(inputState.size) {
             LinkedList<Char>().apply { inputState[it].forEach(::push) }
         }
