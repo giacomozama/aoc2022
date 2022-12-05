@@ -305,8 +305,7 @@ class Day3 : Day() {
         "hgLcgcLpJSMwzmrmzqQrmp"
     )
 
-    // list accumulation
-    // time: O(nm), space: O(1)
+    // time: O(n), space: O(1)
     override fun solveFirstPuzzle(): Int {
         var result = 0
         for (rucksack in input) {
@@ -322,8 +321,7 @@ class Day3 : Day() {
         return result
     }
 
-    // chunked list accumulation
-    // time: O(nm), space: O(1)
+    // time: O(n), space: O(1)
     override fun solveSecondPuzzle(): Int {
         var result = 0
         for (i in input.indices step 3) {

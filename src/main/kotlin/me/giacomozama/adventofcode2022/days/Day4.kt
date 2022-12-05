@@ -1005,7 +1005,6 @@ class Day4 : Day() {
         intArrayOf(6, 63, 80, 92)
     )
 
-    // list accumulation
     // time: O(n), space: O(1)
     override fun solveFirstPuzzle(): Int {
         var result = 0
@@ -1015,7 +1014,6 @@ class Day4 : Day() {
         return result
     }
 
-    // list accumulation
     // time: O(n), space: O(1)
     override fun solveSecondPuzzle(): Int {
         var result = 0

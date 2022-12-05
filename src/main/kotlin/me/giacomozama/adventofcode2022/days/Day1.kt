@@ -246,11 +246,9 @@ class Day1 : Day() {
         intArrayOf(8040, 4567, 7515, 2496, 5786, 1226, 8596, 2383, 7726, 1760)
     )
 
-    // - linear search
     // time: O(n), space: O(1)
     override fun solveFirstPuzzle(): Int = input.fold(0) { max, cur -> maxOf(max, cur.sum()) }
-    
-    // - linear top 3 search
+
     // time: O(n), space: O(1)
     override fun solveSecondPuzzle(): Int {
         var top1 = 0
