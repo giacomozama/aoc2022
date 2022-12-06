@@ -4,7 +4,7 @@ import java.util.*
 
 class Day5 : Day() {
 
-    private val inputState: List<CharArray> = listOf(
+    private val inputState: Array<CharArray> = arrayOf(
         charArrayOf('D', 'T', 'R', 'B', 'J', 'L', 'W', 'G'),
         charArrayOf('S', 'W', 'C'),
         charArrayOf('R', 'Z', 'T', 'M'),
@@ -16,7 +16,7 @@ class Day5 : Day() {
         charArrayOf('Q', 'P', 'D', 'S', 'V')
     )
 
-    private val inputMoves: List<IntArray> = listOf(
+    private val inputMoves: Array<IntArray> = arrayOf(
         intArrayOf(1, 3, 5),
         intArrayOf(5, 5, 4),
         intArrayOf(6, 7, 3),
@@ -544,9 +544,7 @@ class Day5 : Day() {
         val temp = LinkedList<Char>()
         for ((qty, from, to) in inputMoves) {
             repeat(qty) { temp.push(state[from - 1].pop()) }
-            while (temp.isNotEmpty()) {
-                state[to - 1].push(temp.pop())
-            }
+            repeat(qty) { state[to - 1].push(temp.pop()) }
         }
         val sb = StringBuilder()
         for (stack in state) sb.append(stack.pop())

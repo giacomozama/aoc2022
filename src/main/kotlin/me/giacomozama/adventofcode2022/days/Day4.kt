@@ -2,7 +2,7 @@ package me.giacomozama.adventofcode2022.days
 
 class Day4 : Day() {
 
-    private val input: List<IntArray> = listOf(
+    private val input: Array<IntArray> = arrayOf(
         intArrayOf(7, 7, 8, 42),
         intArrayOf(2, 95, 2, 94),
         intArrayOf(10, 54, 33, 90),

@@ -2,7 +2,7 @@ package me.giacomozama.adventofcode2022.days
 
 class Day3 : Day() {
 
-    private val input: List<String> = listOf(
+    private val input: Array<String> = arrayOf(
         "WVHGHwddqSsNjsjwqVvdwZRCbcJcZTCcsZbLcJJsCZ",
         "hngprFFhFDFhrDpzzQDhtnBJJRJZbZvTcvbfRCJfBRcBJl",
         "DmptngtFwvvMmwmm",
@@ -309,7 +309,7 @@ class Day3 : Day() {
     override fun solveFirstPuzzle(): Int {
         var result = 0
         for (rucksack in input) {
-            val mask = getCharBitmask(rucksack.substring(0, rucksack.length / 2))
+            val mask = getCharBitmask(rucksack.take(rucksack.length / 2))
             for (i in rucksack.length / 2 until rucksack.length) {
                 val c = rucksack[i]
                 if (1L shl (c - 'A') and mask != 0L) {
