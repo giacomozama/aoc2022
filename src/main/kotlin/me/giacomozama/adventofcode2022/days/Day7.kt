@@ -1032,9 +1032,7 @@ class Day7 : Day() {
                     stack.peek().children.add(dir)
                     stack.push(dir)
                 }
-                line == "$ ls" || line.startsWith("dir ") -> {
-                }
-                else -> {
+                line != "$ ls" && !line.startsWith("dir ") -> {
                     val size = line.substringBefore(' ').toInt()
                     stack.peek().children.add(Node.File(size))
                 }
