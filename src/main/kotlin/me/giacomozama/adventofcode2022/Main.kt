@@ -5,7 +5,7 @@ import kotlin.time.Duration
 import kotlin.time.measureTime
 
 fun main() {
-    println("=== Advent of Code 2022 - Giacomo Zama ===")
+    println("### Advent of Code 2022 - Giacomo Zama ###")
 
     val days = arrayOf(
         ::Day1,
@@ -14,7 +14,7 @@ fun main() {
         ::Day4,
         ::Day5,
         ::Day6,
-        // ::Day7,
+        ::Day7,
         // ::Day8,
         // ::Day9,
         // ::Day10,
@@ -37,8 +37,11 @@ fun main() {
 
     var globalTiming = Duration.ZERO
     for (i in days.indices) {
-        val day = days[i]()
         println("\n-- Solving day ${i + 1}:")
+        val day: Day
+        val instantiationTiming = measureTime { day = days[i]() }
+        println("---- Instantiated in $instantiationTiming.")
+        globalTiming += instantiationTiming
 
         val firstSolution: Any
         val firstTiming = measureTime { firstSolution = day.solveFirstPuzzle() }
@@ -51,5 +54,5 @@ fun main() {
         globalTiming += secondTiming
     }
 
-    println("\nAll done! Took $globalTiming.")
+    println("\n### All done! Took $globalTiming. ###")
 }
