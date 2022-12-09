@@ -2010,7 +2010,7 @@ class Day9 : Day() {
 
     // time: O(n), space: O(n)
     override fun solveFirstPuzzle(): Int {
-        val visited = hashSetOf<List<Int>>()
+        val visited = hashSetOf<Int>()
         var headX = 0
         var headY = 0
         var tailX = 0
@@ -2027,7 +2027,7 @@ class Day9 : Day() {
                     tailX += (headX - tailX).sign
                     tailY += (headY - tailY).sign
                 }
-                visited += listOf(tailX, tailY)
+                visited += tailX * 10007 + tailY
             }
         }
         return visited.size
@@ -2035,7 +2035,7 @@ class Day9 : Day() {
 
     // time: O(n), space: O(n)
     override fun solveSecondPuzzle(): Int {
-        val visited = hashSetOf<List<Int>>()
+        val visited = hashSetOf<Int>()
         val state = Array(10) { IntArray(2) }
         for ((dir, dist) in input) {
             repeat(dist) {
@@ -2051,7 +2051,7 @@ class Day9 : Day() {
                         state[i][1] += (state[i - 1][1] - state[i][1]).sign
                     }
                 }
-                visited += state[9].toList()
+                visited += state[9][0] * 10007 + state[9][1]
             }
         }
         return visited.size
