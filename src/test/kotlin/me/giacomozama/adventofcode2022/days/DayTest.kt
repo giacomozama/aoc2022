@@ -6,8 +6,8 @@ import kotlin.test.assertEquals
 class DayTest {
 
     private fun testDay(day: Day, expectedOutput1: Any, expectedOutput2: Any) {
-        assertEquals(day.solveFirstPuzzle(), expectedOutput1)
-        assertEquals(day.solveSecondPuzzle(), expectedOutput2)
+        assertEquals(expectedOutput1, day.solveFirstPuzzle())
+        assertEquals(expectedOutput2, day.solveSecondPuzzle())
     }
 
     @Test
@@ -53,5 +53,19 @@ class DayTest {
     @Test
     fun `test Day9`() {
         testDay(Day9(), 5883, 2367)
+    }
+
+    @Test
+    fun `test Day10`() {
+        val expectedOutput2 = """
+            
+            ████░█░░█░███░░████░█░░░░███░░░░██░███░░
+            █░░░░█░░█░█░░█░░░░█░█░░░░█░░█░░░░█░█░░█░
+            ███░░████░███░░░░█░░█░░░░█░░█░░░░█░█░░█░
+            █░░░░█░░█░█░░█░░█░░░█░░░░███░░░░░█░███░░
+            █░░░░█░░█░█░░█░█░░░░█░░░░█░█░░█░░█░█░█░░
+            ████░█░░█░███░░████░████░█░░█░░██░░█░░█░
+        """.trimIndent()
+        testDay(Day10(), 12640, expectedOutput2)
     }
 }
