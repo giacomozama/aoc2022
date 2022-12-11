@@ -68,4 +68,9 @@ class DayTest {
         """.trimIndent()
         testDay(Day10(), 12640, expectedOutput2)
     }
+
+    @Test
+    fun `test Day11`() {
+        testDay(Day11(), 118674, 32333418600)
+    }
 }
