@@ -83,4 +83,9 @@ class DayTest {
     fun `test Day13`() {
         testDay(Day13(), 4894, 24180)
     }
+
+    @Test
+    fun `test Day14`() {
+        testDay(Day14(), 901, 24589)
+    }
 }
