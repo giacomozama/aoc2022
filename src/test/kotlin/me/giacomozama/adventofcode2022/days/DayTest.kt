@@ -88,4 +88,9 @@ class DayTest {
     fun `test Day14`() {
         testDay(Day14(), 901, 24589)
     }
+
+    @Test
+    fun `test Day15`() {
+        testDay(Day15(), 5_100_463, 11_557_863_040_754L)
+    }
 }
