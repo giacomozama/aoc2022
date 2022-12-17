@@ -77,7 +77,7 @@ class Day15 : Day() {
                 end = maxOf(end, cur[1])
                 cur = queue.poll()
             }
-            if (end == 3_999_999) return 4_000_000L * 4_000_000L + y
+            if (end == 3_999_999) return 16_000_000_000_000L + y
         }
         error("Beacon not found.")
     }
