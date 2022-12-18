@@ -1,6 +1,7 @@
 package me.giacomozama.adventofcode2022
 
 import me.giacomozama.adventofcode2022.days.*
+import java.io.File
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
@@ -8,15 +9,15 @@ fun main() {
     println("### Advent of Code 2022 - Giacomo Zama ###")
 
     val days = arrayOf(
-        ::Day1,
-        ::Day2,
-        ::Day3,
-        ::Day4,
-        ::Day5,
-        ::Day6,
-        ::Day7,
-        ::Day8,
-        ::Day9,
+        ::Day01,
+        ::Day02,
+        ::Day03,
+        ::Day04,
+        ::Day05,
+        ::Day06,
+        ::Day07,
+        ::Day08,
+        ::Day09,
         ::Day10,
         ::Day11,
         ::Day12,
@@ -24,8 +25,8 @@ fun main() {
         ::Day14,
         ::Day15,
         ::Day16,
-        // ::Day17,
-        // ::Day18,
+        ::Day17,
+        ::Day18,
         // ::Day19,
         // ::Day20,
         // ::Day21,
@@ -39,9 +40,16 @@ fun main() {
     for (i in days.indices) {
         println("\n-- Solving day ${i + 1}:")
         val day: Day
+
         val instantiationTiming = measureTime { day = days[i]() }
         println("---- Instantiated in $instantiationTiming.")
         globalTiming += instantiationTiming
+
+        val parsingTiming = measureTime {
+            day.parseInput(File("input/Day${(i + 1).toString().padStart(2, '0')}.txt"))
+        }
+        println("---- Parsed input in $parsingTiming.")
+        globalTiming += parsingTiming
 
         val firstSolution: Any
         val firstTiming = measureTime { firstSolution = day.solveFirstPuzzle() }

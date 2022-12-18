@@ -1,5 +1,6 @@
 package me.giacomozama.adventofcode2022.days
 
+import java.io.File
 import java.util.*
 
 class Day11 : Day() {
@@ -7,51 +8,38 @@ class Day11 : Day() {
     private class Monkey(
         val startingItems: List<Long>,
         val operation: (Long) -> Long,
-        val test: List<Int>
+        val test: IntArray
     )
 
-    private val input: Array<Monkey> = arrayOf(
-        Monkey(
-            startingItems = listOf(85, 79, 63, 72),
-            operation = { it * 17 },
-            test = listOf(2, 2, 6)
-        ),
-        Monkey(
-            startingItems = listOf(53, 94, 65, 81, 93, 73, 57, 92),
-            operation = { it * it },
-            test = listOf(7, 0, 2)
-        ),
-        Monkey(
-            startingItems = listOf(62, 63),
-            operation = { it + 7 },
-            test = listOf(13, 7, 6)
-        ),
-        Monkey(
-            startingItems = listOf(57, 92, 56),
-            operation = { it + 4 },
-            test = listOf(5, 4, 5)
-        ),
-        Monkey(
-            startingItems = listOf(67),
-            operation = { it + 5 },
-            test = listOf(3, 1, 5)
-        ),
-        Monkey(
-            startingItems = listOf(85, 56, 66, 72, 57, 99),
-            operation = { it + 6 },
-            test = listOf(19, 1, 0)
-        ),
-        Monkey(
-            startingItems = listOf(86, 65, 98, 97, 69),
-            operation = { it * 13 },
-            test = listOf(11, 3, 7)
-        ),
-        Monkey(
-            startingItems = listOf(87, 68, 92, 66, 91, 50, 68),
-            operation = { it + 2 },
-            test = listOf(17, 4, 3)
-        )
-    )
+    private lateinit var input: List<Monkey>
+
+    private fun parseOperation(s: String): (Long) -> Long {
+        val operation: (Long, Long) -> Long = when (s[0]) {
+            '+' -> Long::plus
+            '-' -> Long::minus
+            '*' -> Long::times
+            else -> Long::div
+        }
+        val operand = s.drop(2)
+        if (operand == "old") {
+            return { operation(it, it) }
+        } else {
+            val parsedOperand = operand.toLong()
+            return { operation(it, parsedOperand) }
+        }
+    }
+
+    override fun parseInput(inputFile: File) {
+        input = inputFile.useLines { lines ->
+            lines.chunked(7).map { chunk ->
+                Monkey(
+                    startingItems = chunk[1].substringAfter(": ").split(", ").map { it.toLong() },
+                    operation = parseOperation(chunk[2].substringAfter("= old ")),
+                    test = IntArray(3) { chunk[it + 3].substringAfter("y ").toInt() }
+                )
+            }.toList()
+        }
+    }
 
     // n = number of rounds, m = number of items, o = number of monkeys
     // time: O(n * m), space: O(m + o)

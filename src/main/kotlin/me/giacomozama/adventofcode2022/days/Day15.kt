@@ -1,38 +1,27 @@
 package me.giacomozama.adventofcode2022.days
 
+import java.io.File
 import java.util.PriorityQueue
 import kotlin.math.abs
 
 class Day15 : Day() {
 
-    private val input: Array<IntArray> = arrayOf(
-        intArrayOf(2483411, 3902983, 2289579, 3633785),
-        intArrayOf(3429446, 303715, 2876111, -261280),
-        intArrayOf(666423, 3063763, 2264411, 2779977),
-        intArrayOf(3021606, 145606, 2876111, -261280),
-        intArrayOf(2707326, 2596893, 2264411, 2779977),
-        intArrayOf(3103704, 1560342, 2551409, 2000000),
-        intArrayOf(3497040, 3018067, 3565168, 2949938),
-        intArrayOf(1708530, 855013, 2551409, 2000000),
-        intArrayOf(3107437, 3263465, 3404814, 3120160),
-        intArrayOf(2155249, 2476196, 2264411, 2779977),
-        intArrayOf(3447897, 3070850, 3404814, 3120160),
-        intArrayOf(2643048, 3390796, 2289579, 3633785),
-        intArrayOf(3533132, 3679388, 3404814, 3120160),
-        intArrayOf(3683790, 3017900, 3565168, 2949938),
-        intArrayOf(1943208, 3830506, 2289579, 3633785),
-        intArrayOf(3940100, 3979653, 2846628, 4143786),
-        intArrayOf(3789719, 1225738, 4072555, 1179859),
-        intArrayOf(3939775, 578381, 4072555, 1179859),
-        intArrayOf(3880152, 3327397, 3404814, 3120160),
-        intArrayOf(3280639, 2446475, 3565168, 2949938),
-        intArrayOf(2348869, 2240374, 2551409, 2000000),
-        intArrayOf(3727441, 2797456, 3565168, 2949938),
-        intArrayOf(3973153, 2034945, 4072555, 1179859),
-        intArrayOf(38670, 785556, 311084, -402911),
-        intArrayOf(3181909, 2862960, 3565168, 2949938),
-        intArrayOf(3099490, 3946226, 2846628, 4143786)
-    )
+    private lateinit var input: List<IntArray>
+
+    override fun parseInput(inputFile: File) {
+        val regex = """Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)""".toRegex()
+        input = inputFile.useLines { lines ->
+            lines.map { line ->
+                val match = requireNotNull(regex.matchEntire(line))
+                intArrayOf(
+                    match.groupValues[1].toInt(),
+                    match.groupValues[2].toInt(),
+                    match.groupValues[3].toInt(),
+                    match.groupValues[4].toInt()
+                )
+            }.toList()
+        }
+    }
 
     // time: O(n * log(n), space: O(n)
     override fun solveFirstPuzzle(): Int {
