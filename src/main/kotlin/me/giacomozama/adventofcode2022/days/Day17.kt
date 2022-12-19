@@ -12,14 +12,18 @@ class Day17 : Day() {
 
     private sealed interface Rock {
 
+        var left: Int
+
+        var bottom: Int
+
         fun pushLeft(grid: Array<BooleanArray>)
         fun pushRight(grid: Array<BooleanArray>)
         fun pushDown(grid: Array<BooleanArray>): Int
 
         // ####
-        class HorizontalLineShape(private var bottom: Int) : Rock {
+        class HorizontalLineShape(override var bottom: Int) : Rock {
 
-            private var left = 2
+            override var left = 2
 
             override fun pushLeft(grid: Array<BooleanArray>) {
                 if (left > 0 && !grid[bottom][left - 1]) left--
@@ -51,9 +55,9 @@ class Day17 : Day() {
         // .#.
         // ###
         // .#.
-        class CrossShape(private var bottom: Int) : Rock {
+        class CrossShape(override var bottom: Int) : Rock {
 
-            private var left = 2
+            override var left = 2
 
             override fun pushLeft(grid: Array<BooleanArray>) {
                 if (left > 0 &&
@@ -94,9 +98,9 @@ class Day17 : Day() {
         // ..#
         // ..#
         // ###
-        class LShape(private var bottom: Int) : Rock {
+        class LShape(override var bottom: Int) : Rock {
 
-            private var left = 2
+            override var left = 2
 
             override fun pushLeft(grid: Array<BooleanArray>) {
                 if (left > 0 &&
@@ -137,9 +141,9 @@ class Day17 : Day() {
         // #
         // #
         // #
-        class VerticalLineShape(private var bottom: Int) : Rock {
+        class VerticalLineShape(override var bottom: Int) : Rock {
 
-            private var left = 2
+            override var left = 2
 
             override fun pushLeft(grid: Array<BooleanArray>) {
                 if (left > 0 &&
@@ -175,9 +179,9 @@ class Day17 : Day() {
 
         // ##
         // ##
-        class SquareShape(private var bottom: Int) : Rock {
+        class SquareShape(override var bottom: Int) : Rock {
 
-            private var left = 2
+            override var left = 2
 
             override fun pushLeft(grid: Array<BooleanArray>) {
                 if (left > 0 &&
@@ -252,7 +256,81 @@ class Day17 : Day() {
         return highestPoint + 1
     }
 
-    override fun solveSecondPuzzle(): Any {
-        return "Not yet completed"
+    // m = some arbitrary number of rocks within which we expect to find the sequence
+    // not sure if it works for all inputs
+    // time: O(m), space: O(m)
+    override fun solveSecondPuzzle(): Long {
+        val grid = Array(6_500) { BooleanArray(7) }
+        val indicesOfBottomsAtHeight = hashMapOf<Int, Int>()
+
+        var rocksSettled = 0
+        var highestPoint = -1
+        var sidePushIndex = 0
+        var currentRock: Rock? = null
+        var shouldFall = false
+
+        while (rocksSettled < 4_000) {
+            if (currentRock == null) {
+                currentRock = shapeSequence[rocksSettled % shapeSequence.size](highestPoint + 4)
+            }
+            if (shouldFall) {
+                val h = currentRock.pushDown(grid)
+                if (h >= 0) {
+                    highestPoint = maxOf(highestPoint, h)
+                    indicesOfBottomsAtHeight[currentRock.bottom] = ++rocksSettled
+                    currentRock = null
+                }
+            } else {
+                if (input[sidePushIndex++] == '<') {
+                    currentRock.pushLeft(grid)
+                } else {
+                    currentRock.pushRight(grid)
+                }
+                sidePushIndex %= input.length
+            }
+            shouldFall = !shouldFall
+        }
+
+        // we expect the sequence to appear before height 3500, this was tested empirically
+        var r = 3_500
+        var l = 0
+        outer@ while (l < r) {
+            while (!(grid[l] contentEquals grid[r])) l++
+
+            var j = l
+            var k = r
+            while (j < r) {
+                if (!(grid[j++] contentEquals grid[k++])) {
+                    l++
+                    continue@outer
+                }
+            }
+
+            break
+        }
+
+        while (grid[--l] contentEquals grid[--r]) {
+            // do nothing
+        }
+
+        var firstRock = indicesOfBottomsAtHeight[++l]
+        while (firstRock == null) {
+            firstRock = indicesOfBottomsAtHeight[--l]
+        }
+
+        var lastRock = indicesOfBottomsAtHeight[r]
+        while (lastRock == null) {
+            lastRock = indicesOfBottomsAtHeight[--r]
+        }
+
+        val rocksLeft = ((1_000_000_000_001L - firstRock) % (lastRock - firstRock)).toInt()
+        for (i in l + 1..r) {
+            val p = indicesOfBottomsAtHeight[i] ?: continue
+            if (p - firstRock == rocksLeft) {
+                return i + (1_000_000_000_001L - firstRock) / (lastRock - firstRock) * (r - l)
+            }
+        }
+
+        error("Sequence not found")
     }
 }
