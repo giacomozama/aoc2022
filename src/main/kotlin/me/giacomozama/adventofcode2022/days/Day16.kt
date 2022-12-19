@@ -90,7 +90,7 @@ class Day16 : Day() {
         ) {
             // prune this branch if we could have done better by going without the elephant
             // we have to assume going with the elephant can always yield better results if we take the right path
-            if (myTimeLeft + eleTimeLeft <= 30 && pressure < bestSoloPathIn30Minutes) return
+            if (myTimeLeft + eleTimeLeft <= 30 && pressure <= bestSoloPathIn30Minutes) return
 
             var cantMove = true
             for (mnb in 1 until distances.size) {
