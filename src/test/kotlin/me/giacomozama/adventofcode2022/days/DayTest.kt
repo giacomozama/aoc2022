@@ -112,4 +112,9 @@ class DayTest {
     fun `test Day18`() {
         testDay(18, 3_610, 2_082)
     }
+
+    @Test
+    fun `test Day19`() {
+        testDay(19, 960, 2_040)
+    }
 }
