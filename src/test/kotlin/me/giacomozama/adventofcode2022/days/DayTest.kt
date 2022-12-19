@@ -100,7 +100,7 @@ class DayTest {
 
     @Test
     fun `test Day16`() {
-        testDay(16, 2_359, 0)
+        testDay(16, 2_359, 2_999)
     }
 
     @Test
