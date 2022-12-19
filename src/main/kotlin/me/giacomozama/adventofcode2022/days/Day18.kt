@@ -53,15 +53,24 @@ class Day18 : Day() {
         }
 
         for (x in 0..19) {
-            for (y in 0..19) dfs(x, y, 0)
+            for (y in 0..19) {
+                dfs(x, y, 0)
+                dfs(x, y, 19)
+            }
         }
 
         for (x in 0..19) {
-            for (z in 0..19) dfs(x, 0, z)
+            for (z in 0..19) {
+                dfs(x, 0, z)
+                dfs(x, 19, z)
+            }
         }
 
         for (y in 0..19) {
-            for (z in 0..19) dfs(0, y, z)
+            for (z in 0..19) {
+                dfs(0, y, z)
+                dfs(19, y, z)
+            }
         }
 
         var surface = 0
