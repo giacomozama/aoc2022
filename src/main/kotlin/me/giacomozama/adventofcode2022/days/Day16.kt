@@ -79,6 +79,7 @@ class Day16 : Day() {
         var result = 0
 
         val bestSoloPathIn30Minutes = solveFirstPuzzle()
+        val prevStates = hashSetOf<List<Number>>()
 
         fun dfs(
             myValve: Int,
@@ -88,6 +89,9 @@ class Day16 : Day() {
             myTimeLeft: Int,
             eleTimeLeft: Int
         ) {
+            // prune this branch if redundant
+            if (!prevStates.add(listOf(myValve, eleValve, visited, pressure, myTimeLeft, eleTimeLeft))) return
+
             // prune this branch if we could have done better by going without the elephant
             // we have to assume going with the elephant can always yield better results if we take the right path
             if (myTimeLeft + eleTimeLeft <= 30 && pressure <= bestSoloPathIn30Minutes) return
