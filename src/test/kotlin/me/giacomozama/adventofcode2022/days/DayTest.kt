@@ -117,4 +117,9 @@ class DayTest {
     fun `test Day19`() {
         testDay(19, 960, 2_040)
     }
+
+    @Test
+    fun `test Day20`() {
+        testDay(20, 9_945, 3_338_877_775_442)
+    }
 }
