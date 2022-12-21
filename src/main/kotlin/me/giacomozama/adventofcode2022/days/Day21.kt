@@ -13,7 +13,6 @@ class Day21 : Day() {
     // n = number of monkeys
     // time: O(n), space: O(n)
     override fun solveFirstPuzzle(): Long {
-
         abstract class MonkeyFunction {
             abstract fun evaluate(): Long
         }
@@ -52,57 +51,57 @@ class Day21 : Day() {
         return functions["root"]!!.evaluate()
     }
 
-    private data class Fraction(val num: Long, val den: Long) {
+    override fun solveSecondPuzzle(): Long {
+        data class Fraction(val num: Long, val den: Long) {
 
-        private fun simplified(num: Long, den: Long): Fraction {
-            if (num == 0L) return Fraction(num, den)
-            var a = if (num > 0) num else -num
-            var b = if (den > 0) den else -den
-            while (b != 0L) {
-                val t = a
-                a = b
-                b = t % b
+            private fun simplified(num: Long, den: Long): Fraction {
+                if (num == 0L) return Fraction(num, den)
+                var a = if (num > 0) num else -num
+                var b = if (den > 0) den else -den
+                while (b != 0L) {
+                    val t = a
+                    a = b
+                    b = t % b
+                }
+                return Fraction(num / a, den / a)
             }
-            return Fraction(num / a, den / a)
+
+            operator fun plus(other: Fraction): Fraction {
+                val rDen = den * other.den
+                val rNum = rDen / den * num + rDen / other.den * other.num
+                return simplified(rNum, rDen)
+            }
+
+            operator fun minus(other: Fraction): Fraction {
+                val rDen = den * other.den
+                val rNum = rDen / den * num - rDen / other.den * other.num
+                return simplified(rNum, rDen)
+            }
+
+            operator fun times(other: Fraction) = simplified(num * other.num, den * other.den)
+
+            operator fun div(other: Fraction) = simplified(num * other.den, den * other.num)
         }
 
-        operator fun plus(other: Fraction): Fraction {
-            val rDen = den * other.den
-            val rNum = rDen / den * num + rDen / other.den * other.num
-            return simplified(rNum, rDen)
+        class Binomial(val coeff: Fraction, val offset: Fraction) {
+
+            operator fun plus(other: Binomial) = Binomial(coeff + other.coeff, offset + other.offset)
+
+            operator fun minus(other: Binomial) = Binomial(coeff - other.coeff, offset - other.offset)
+
+            operator fun times(other: Binomial): Binomial = when {
+                coeff.num != 0L -> Binomial(other.offset * coeff, offset * other.offset)
+                other.coeff.num != 0L -> Binomial(offset * other.coeff, offset * other.offset)
+                else -> Binomial(Fraction(0, 1), offset * other.offset)
+            }
+
+            operator fun div(other: Binomial): Binomial = when {
+                coeff.num != 0L -> Binomial(coeff / other.offset, offset / other.offset)
+                other.coeff.num != 0L -> Binomial(offset / other.coeff, offset / other.offset)
+                else -> Binomial(Fraction(0, 1), offset / other.offset)
+            }
         }
 
-        operator fun minus(other: Fraction): Fraction {
-            val rDen = den * other.den
-            val rNum = rDen / den * num - rDen / other.den * other.num
-            return simplified(rNum, rDen)
-        }
-
-        operator fun times(other: Fraction) = simplified(num * other.num, den * other.den)
-
-        operator fun div(other: Fraction) = simplified(num * other.den, den * other.num)
-    }
-
-    private class Binomial(val coeff: Fraction, val offset: Fraction) {
-
-        operator fun plus(other: Binomial) = Binomial(coeff + other.coeff, offset + other.offset)
-
-        operator fun minus(other: Binomial) = Binomial(coeff - other.coeff, offset - other.offset)
-
-        operator fun times(other: Binomial): Binomial = when {
-            coeff.num != 0L -> Binomial(other.offset * coeff, offset * other.offset)
-            other.coeff.num != 0L -> Binomial(offset * other.coeff, offset * other.offset)
-            else -> Binomial(Fraction(0, 1), offset * other.offset)
-        }
-
-        operator fun div(other: Binomial): Binomial = when {
-            coeff.num != 0L -> Binomial(coeff / other.offset, offset / other.offset)
-            other.coeff.num != 0L -> Binomial(offset / other.coeff, offset / other.offset)
-            else -> Binomial(Fraction(0, 1), offset / other.offset)
-        }
-    }
-
-    override fun solveSecondPuzzle(): Any {
         abstract class MonkeyFunction {
             abstract fun evaluate(): Binomial
         }
@@ -110,7 +109,7 @@ class Day21 : Day() {
         val functions = hashMapOf<String, MonkeyFunction>()
 
         class Immediate(val value: Binomial) : MonkeyFunction() {
-            override fun evaluate(): Binomial = value
+            override fun evaluate() = value
         }
 
         class Operation(
@@ -118,9 +117,7 @@ class Day21 : Day() {
             val monkeyB: String,
             val operation: (Binomial, Binomial) -> Binomial
         ) : MonkeyFunction() {
-            override fun evaluate(): Binomial {
-                return operation(functions[monkeyA]!!.evaluate(), functions[monkeyB]!!.evaluate())
-            }
+            override fun evaluate() = operation(functions[monkeyA]!!.evaluate(), functions[monkeyB]!!.evaluate())
         }
 
         val entryPoints = Array(2) { "" }
@@ -160,8 +157,13 @@ class Day21 : Day() {
             }
         }
 
-        val a = functions[entryPoints[0]]!!.evaluate()
-        val b = functions[entryPoints[1]]!!.evaluate()
+        var a = functions[entryPoints[0]]!!.evaluate()
+        var b = functions[entryPoints[1]]!!.evaluate()
+        if (a.coeff.num == 0L) {
+            val t = a
+            a = b
+            b = t
+        }
         val c = (b.offset - a.offset) / a.coeff
         return c.num / c.den
     }
