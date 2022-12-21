@@ -75,7 +75,7 @@ class DayTest {
 
     @Test
     fun `test Day11`() {
-        testDay(11, 118_674, 32_333_418_600)
+        testDay(11, 118_674, 32_333_418_600L)
     }
 
     @Test
@@ -120,6 +120,11 @@ class DayTest {
 
     @Test
     fun `test Day20`() {
-        testDay(20, 9_945, 3_338_877_775_442)
+        testDay(20, 9_945, 3_338_877_775_442L)
+    }
+
+    @Test
+    fun `test Day21`() {
+        testDay(21, 291_425_799_367_130L, 3_219_579_395_609L)
     }
 }
